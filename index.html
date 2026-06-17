@@ -21,6 +21,20 @@
   --fb: 'Inter',sans-serif;
   --fc: 'JetBrains Mono',monospace;
 }
+[data-theme="day"]{
+  --bg:#12082e;--bg2:#1c1045;--bg3:#271860;--bg4:#33227a;
+  --burg:#8b5cf6;--bm:#a070ff;
+  --glow:#c084fc;--gold:#c8952a;--gl:#e0b04b;
+  --cream:#f0eaff;--mt:#b09acc;--mt2:#7060a0;
+  --wht:#faf5ff;--wat:#818cf8;
+}
+[data-theme="access"]{
+  --bg:#07080f;--bg2:#0e1020;--bg3:#161828;--bg4:#1e2238;
+  --burg:#0066cc;--bm:#0080ff;
+  --glow:#38a8ff;--gold:#f0a800;--gl:#f5c842;
+  --cream:#eef4ff;--mt:#8aaabf;--mt2:#5a7a95;
+  --wht:#ffffff;--wat:#00c8e0;
+}
 
 /* ─────────────────────────────────────────────────────────
    RESET
@@ -336,9 +350,55 @@ footer em{color:var(--glow);font-style:normal}
 @keyframes blink{50%{opacity:0}}
 @keyframes spin {to{transform:rotate(360deg)}}
 @keyframes ph   {0%,100%{opacity:.25}50%{opacity:1}}
+
+/* ─── CHICKEN INTRO ─── */
+#chkmd{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);animation:fdIn .5s ease}
+.chk-box{text-align:center;padding:2.5rem 1.8rem;max-width:500px;width:92%}
+.chk-hdr{font-size:3.8rem;line-height:1;margin-bottom:.6rem;display:block;animation:chkBob 2.2s ease-in-out infinite}
+.chk-swrd{font-size:2.2rem;display:inline-block;transform:rotate(-40deg);margin-left:-.5rem;vertical-align:middle;animation:chkSw 2.2s ease-in-out infinite}
+@keyframes chkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes chkSw{0%,100%{transform:rotate(-40deg) translateY(0)}50%{transform:rotate(-40deg) translateY(-8px)}}
+.chk-title{font-family:var(--ft);font-size:1.25rem;color:var(--wht);letter-spacing:.12em;margin:.5rem 0 .25rem}
+.chk-sub{font-family:var(--fs);font-style:italic;font-size:.95rem;color:var(--mt);margin-bottom:1.8rem}
+.chk-opts{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.chk-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:.65rem;padding:1.1rem .9rem;min-width:130px;cursor:pointer;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:.3rem;color:var(--cream);font-family:var(--fb)}
+.chk-btn:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.chk-ico{font-size:1.7rem;margin-bottom:.1rem}
+.chk-btn strong{font-family:var(--ft);font-size:.7rem;letter-spacing:.12em;color:var(--wht);text-transform:uppercase}
+.chk-btn small{font-size:.6rem;color:var(--mt);letter-spacing:.05em}
+#chkmd.giving .chk-swrd{animation:chkGive .55s ease forwards}
+@keyframes chkGive{0%{transform:rotate(-40deg) scale(1);opacity:1}60%{transform:rotate(-20deg) scale(1.6) translate(16px,-18px);opacity:1}100%{transform:rotate(10deg) scale(.05) translate(220px,-220px);opacity:0}}
+#chkmd.fadeout{animation:chkFade .4s ease forwards;pointer-events:none}
+@keyframes chkFade{from{opacity:1}to{opacity:0}}
   </style>
 </head>
 <body>
+
+<!-- Chicken intro: theme picker -->
+<div id="chkmd">
+  <div class="chk-box">
+    <span class="chk-hdr">🐣<span class="chk-swrd">⚔️</span></span>
+    <p class="chk-title">Choose your adventure</p>
+    <p class="chk-sub">How would you like to explore today?</p>
+    <div class="chk-opts">
+      <button class="chk-btn" onclick="pickTheme('night')">
+        <span class="chk-ico">🌙</span>
+        <strong>Night</strong>
+        <small>dark & deep</small>
+      </button>
+      <button class="chk-btn" onclick="pickTheme('day')">
+        <span class="chk-ico">🌸</span>
+        <strong>Day</strong>
+        <small>soft lavender</small>
+      </button>
+      <button class="chk-btn" onclick="pickTheme('access')">
+        <span class="chk-ico">🔆</span>
+        <strong>Clear Vision</strong>
+        <small>high contrast · inclusive</small>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div id="scur"><div id="sc-flip">
 <svg id="sc-sv" viewBox="0 0 64 80" width="56" height="70" xmlns="http://www.w3.org/2000/svg">
@@ -1029,25 +1089,23 @@ if (!isTch) {
   const TX_R=51, TX_L=5, TY=4;
   let mx=0, my=0, lastSpk=0, isLeft=false, TX=TX_R;
 
-  function applyHand(left){
-    isLeft=left; TX=left?TX_L:TX_R;
-    scFlip.classList.toggle('lh',left);
-  }
-
-  /* always ask on every visit */
-  {
+  /* show hand modal — called after theme is chosen */
+  window.__showHandModal=function(){
     const m=document.createElement('div');
     m.id='hmd';
     m.innerHTML=
-      '<p class="hm-t">Which hand do you use?</p>'+
+      '<p class="hm-t">Which hand do you wield with?</p>'+
       '<div class="hm-bs">'+
-      '<button class="hm-b" onclick="scChooseHand(\'L\')" style="background:var(--burg);border-color:var(--glow)">🖱️ Right hand</button>'+
-      '<button class="hm-b" onclick="scChooseHand(\'R\')">Left hand</button>'+
+      '<button class="hm-b" onclick="scChooseHand(false)" style="background:var(--burg);border-color:var(--glow)">⚔️ Right hand</button>'+
+      '<button class="hm-b" onclick="scChooseHand(true)">Left hand ⚔️</button>'+
       '</div>';
     document.body.appendChild(m);
-  }
-  window.scChooseHand=function(h){
-    applyHand(h==='L');
+  };
+
+  /* false = right hand (no flip), true = left hand (flip) */
+  window.scChooseHand=function(flipIt){
+    isLeft=flipIt; TX=flipIt?TX_L:TX_R;
+    scFlip.classList.toggle('lh',flipIt);
     document.getElementById('hmd')?.remove();
   };
 
@@ -1263,6 +1321,21 @@ function dWater(){
   pts.forEach(p=>{p.u();p.d();});
   requestAnimationFrame(loop);
 })();
+
+/* ── Theme picker + chicken flow ── */
+window.pickTheme=function(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const cm=document.getElementById('chkmd');
+  if(!cm) return;
+  cm.classList.add('giving');
+  setTimeout(()=>{
+    cm.classList.add('fadeout');
+    setTimeout(()=>{
+      cm.remove();
+      if(window.__showHandModal) window.__showHandModal();
+    },420);
+  },520);
+};
 </script>
 </body>
 </html>
