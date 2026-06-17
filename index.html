@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anha Ashraf Liya | Cybersecurity & CS Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+/* ─────────────────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────────────────── */
+:root{
+  --bg:    #050308; --bg2: #0c0910; --bg3: #13101a; --bg4: #1b1527;
+  --burg:  #7b1c2e; --bm:  #9e2338;
+  --glow:  #c93050; --gold:#c8952a; --gl:  #e8b84b;
+  --cream: #f0e6d3; --mt:  #8a7f94; --mt2: #5e5468;
+  --wht:   #fdf6f0; --wat: #2a9db5;
+  --fs: 'Crimson Pro',Georgia,serif;
+  --ft: 'Cinzel',serif;
+  --fb: 'Inter',sans-serif;
+  --fc: 'JetBrains Mono',monospace;
+}
+
+/* ─────────────────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--cream);font-family:var(--fb);overflow-x:hidden;cursor:none}
+@media(hover:none),(pointer:coarse){body{cursor:auto}}
+::selection{background:var(--burg);color:var(--wht)}
+a{color:inherit;text-decoration:none}
+
+/* ─────────────────────────────────────────────────────────
+   SWORD CURSOR
+───────────────────────────────────────────────────────── */
+#scur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;will-change:transform}
+/* flip wrapper — handles left/right handedness */
+#sc-flip{display:inline-block}
+#sc-flip.lh{transform:scaleX(-1)}
+/* sword SVG — sway pivots around the grip (47% x, 35% y of viewBox) */
+#sc-sv{
+  filter:drop-shadow(0 0 2px rgba(255,238,100,.3));
+  transition:filter .18s;
+  animation:scSway 5s ease-in-out infinite;
+  transform-origin:13% 86%;
+}
+#sc-sv.hov{
+  filter:
+    drop-shadow(0 0 5px rgba(255,218,60,.95))
+    drop-shadow(0 0 14px rgba(255,180,40,.55))
+    drop-shadow(0 0 28px rgba(255,140,20,.25));
+}
+@keyframes scSway{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-1.8deg)}70%{transform:rotate(1.6deg)}}
+/* tip pulse */
+.sc-t1{animation:scP 2.4s ease-in-out infinite}
+.sc-t2{animation:scP 2.4s ease-in-out infinite .6s}
+@keyframes scP{0%,100%{opacity:.28}50%{opacity:.75}}
+/* sparks */
+.sc-spark{position:fixed;pointer-events:none;border-radius:50%;z-index:9998}
+@keyframes scSpk{0%{opacity:.95;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
+/* click flash */
+.sc-flash{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,255,200,.92),rgba(255,220,80,.35) 40%,transparent 70%)}
+@keyframes scFl{0%{opacity:1;width:10px;height:10px}100%{opacity:0;width:58px;height:58px}}
+/* handedness modal */
+#hmd{position:fixed;bottom:2.2rem;left:50%;transform:translateX(-50%);z-index:10001;background:rgba(5,3,8,.96);border:1px solid rgba(123,28,46,.55);border-radius:.5rem;padding:1.3rem 2.2rem;text-align:center;backdrop-filter:blur(22px);animation:fu .5s forwards;min-width:230px}
+.hm-t{font-family:var(--ft);font-size:.68rem;color:var(--mt);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.9rem}
+.hm-bs{display:flex;gap:.6rem;justify-content:center}
+.hm-b{background:var(--bg3);border:1px solid rgba(123,28,46,.32);color:var(--cream);padding:.5rem 1.4rem;border-radius:.3rem;font-size:.74rem;cursor:pointer;transition:all .2s;font-family:var(--fc);letter-spacing:.08em}
+.hm-b:hover{background:var(--burg);border-color:var(--glow);color:var(--wht)}
+@media(hover:none),(pointer:coarse){#scur{display:none}#hmd{display:none}}
+
+/* ─────────────────────────────────────────────────────────
+   SCROLL PROGRESS
+───────────────────────────────────────────────────────── */
+#spb{position:fixed;top:0;left:0;height:2px;width:0;z-index:300;background:linear-gradient(90deg,var(--burg),var(--glow),var(--gold));transition:width .04s linear}
+
+/* ─────────────────────────────────────────────────────────
+   CANVAS
+───────────────────────────────────────────────────────── */
+#bgc{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ─────────────────────────────────────────────────────────
+   CHAPTER DOTS
+───────────────────────────────────────────────────────── */
+#cdots{position:fixed;right:1.4rem;top:50%;transform:translateY(-50%);z-index:150;display:flex;flex-direction:column;gap:.75rem}
+.cdot{width:8px;height:8px;border:1px solid rgba(123,28,46,.4);border-radius:50%;cursor:none;transition:all .3s;position:relative}
+.cdot::after{content:attr(data-l);position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:.6rem;color:var(--mt);white-space:nowrap;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .3s;font-family:var(--fc)}
+.cdot:hover::after{opacity:1}
+.cdot.on{background:var(--glow);border-color:var(--glow);box-shadow:0 0 8px var(--glow)}
+@media(max-width:900px){#cdots{display:none}}
+
+/* ─────────────────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;transition:background .4s,backdrop-filter .4s}
+nav.sc{background:rgba(5,3,8,.93);backdrop-filter:blur(22px);border-bottom:1px solid rgba(123,28,46,.2)}
+.nlogo{font-family:var(--ft);font-size:.9rem;font-weight:700;color:var(--gl);letter-spacing:.18em}
+.nlinks{display:flex;gap:2rem;list-style:none}
+.nlinks a{font-size:.72rem;color:var(--mt);letter-spacing:.12em;text-transform:uppercase;transition:color .3s;position:relative}
+.nlinks a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--glow);transform:scaleX(0);transition:transform .3s}
+.nlinks a:hover{color:var(--wht)}
+.nlinks a:hover::after{transform:scaleX(1)}
+
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;cursor:pointer}
+.hbg span{display:block;width:24px;height:2px;background:var(--cream);border-radius:2px;transition:all .3s}
+.hbg.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hbg.on span:nth-child(2){opacity:0}
+.hbg.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+.mnav{position:fixed;inset:0;background:rgba(5,3,8,.97);z-index:180;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity .35s}
+.mnav.on{opacity:1;pointer-events:all}
+.mnav a{font-family:var(--ft);font-size:clamp(1.5rem,6vw,2rem);color:var(--cream);letter-spacing:.14em;transition:color .3s}
+.mnav a:hover{color:var(--glow)}
+.mnav-sub{font-family:var(--fc);font-size:.6rem;color:var(--mt2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:-.5rem}
+
+@media(max-width:768px){.nlinks{display:none}.hbg{display:flex}}
+@media(min-width:769px){.mnav{display:none!important}}
+
+/* ─────────────────────────────────────────────────────────
+   SHARED SECTION LAYOUT
+───────────────────────────────────────────────────────── */
+section{position:relative;z-index:1}
+.si{max-width:1080px;margin:0 auto;padding:7rem 2rem 5.5rem}
+@media(max-width:640px){.si{padding:5rem 1.3rem 4rem}}
+
+/* Chapter header */
+.ch{margin-bottom:4rem}
+.ch-lbl{font-family:var(--fc);font-size:.66rem;color:var(--glow);letter-spacing:.3em;text-transform:uppercase;margin-bottom:.45rem;opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}
+.ch-ttl{font-family:var(--ft);font-size:clamp(1.9rem,5vw,3.4rem);font-weight:900;color:var(--wht);margin-bottom:.9rem;opacity:0;transform:translateY(14px);transition:opacity .7s .1s,transform .7s .1s}
+.ch-line{height:1px;width:0;background:linear-gradient(90deg,var(--burg),transparent);transition:width .85s .25s}
+.ch-story{font-family:var(--fs);font-size:clamp(.95rem,2vw,1.18rem);font-style:italic;color:var(--mt);line-height:1.95;max-width:640px;margin-top:1.4rem;opacity:0;transform:translateY(10px);transition:opacity .7s .2s,transform .7s .2s}
+.ch.vis .ch-lbl,.ch.vis .ch-ttl,.ch.vis .ch-story{opacity:1;transform:translateY(0)}
+.ch.vis .ch-line{width:130px}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.12s}.d2{transition-delay:.22s}.d3{transition-delay:.33s}.d4{transition-delay:.44s}
+
+/* ─────────────────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────────────────── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;position:relative}
+
+.opn{font-family:var(--fs);font-size:clamp(1rem,2.8vw,1.35rem);color:var(--mt);line-height:2.2;margin-bottom:2.8rem}
+.ol{display:block;opacity:0}
+.ol.a{animation:fu .9s .2s  forwards}
+.ol.b{animation:fu .9s .8s  forwards;font-style:italic;color:var(--cream)}
+.ol.c{animation:fu .9s 1.2s forwards}
+.ol.d{animation:fu .9s 1.9s forwards;font-style:italic}
+
+.hdiv{max-width:260px;width:100%;height:1px;margin:0 auto 2.4rem;background:linear-gradient(90deg,transparent,var(--glow),transparent);opacity:0;animation:fdIn .5s 2.5s forwards}
+
+.hnw{position:relative;overflow:hidden}
+.hsl{position:absolute;top:0;left:-10%;width:0;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(201,48,80,.18) 50%,transparent 100%);animation:slW .45s 2.7s forwards}
+.hname{font-family:var(--ft);font-weight:900;line-height:1;color:var(--wht);letter-spacing:.02em;opacity:0;animation:nmIn .65s 2.8s forwards}
+.hn-pre{display:block;font-size:clamp(1.3rem,3.5vw,2.5rem);color:var(--gl);letter-spacing:.28em;margin-bottom:.15rem}
+.hn-main{display:block;font-size:clamp(4rem,13vw,9.5rem);color:var(--wht);letter-spacing:.04em}
+
+.hsub{font-family:var(--ft);font-size:clamp(.7rem,1.8vw,.95rem);color:var(--gl);letter-spacing:.42em;margin-top:.7rem;opacity:0;animation:fu .6s 3.2s forwards}
+
+.hrole{font-family:var(--fc);font-size:clamp(.7rem,1.5vw,.83rem);color:var(--mt);margin-top:1.1rem;letter-spacing:.04em;min-height:1.4em;opacity:0;animation:fu .6s 3.6s forwards}
+#twt{color:var(--cream)}
+.tc{display:inline-block;width:2px;height:1em;background:var(--glow);vertical-align:middle;animation:blink .7s step-end infinite}
+
+.hctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2.5rem;opacity:0;animation:fu .6s 4.0s forwards}
+
+.shint{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mt2);opacity:0;animation:fu .6s 4.4s forwards;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.shint::after{content:'';width:1px;height:26px;background:linear-gradient(180deg,var(--burg),transparent);animation:ph 1.6s infinite}
+
+/* ─────────────────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────────────────── */
+.btn{display:inline-block;padding:.78rem 2rem;border-radius:.3rem;font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;transition:all .3s;cursor:none}
+@media(hover:none),(pointer:coarse){.btn{cursor:pointer}}
+.btn-p{background:var(--burg);color:var(--wht);border:1px solid var(--bm);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:left .5s}
+.btn-p:hover{background:var(--bm);box-shadow:0 0 30px rgba(201,48,80,.28)}
+.btn-p:hover::before{left:100%}
+.btn-g{background:transparent;color:var(--gl);border:1px solid rgba(200,149,42,.38)}
+.btn-g:hover{background:rgba(200,149,42,.07);border-color:var(--gl);box-shadow:0 0 20px rgba(200,149,42,.12)}
+
+/* ─────────────────────────────────────────────────────────
+   WAVE DIVIDER
+───────────────────────────────────────────────────────── */
+.wdv{position:relative;height:60px;z-index:1;overflow:hidden;pointer-events:none}
+.wdv svg{position:absolute;bottom:0;left:0;width:100%;height:auto}
+
+/* ─────────────────────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────────────────────── */
+#about{background:linear-gradient(180deg,var(--bg) 0%,#0c0910 100%)}
+.ag{display:grid;grid-template-columns:320px 1fr;gap:4rem;align-items:start}
+@media(max-width:860px){.ag{grid-template-columns:1fr;gap:2.5rem}}
+
+.acard{background:var(--bg3);border:1px solid rgba(123,28,46,.28);border-radius:.5rem;padding:2.2rem;text-align:center;position:relative;overflow:hidden}
+.acard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--burg),var(--glow),var(--gold))}
+.av{width:96px;height:96px;border-radius:50%;border:2px solid var(--burg);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 1.1rem;position:relative;box-shadow:0 0 22px rgba(123,28,46,.28)}
+.av::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px dashed rgba(123,28,46,.28);animation:spin 11s linear infinite}
+.aname{font-family:var(--ft);font-size:1.05rem;color:var(--wht);margin-bottom:.18rem}
+.arole{font-size:.72rem;color:var(--glow);letter-spacing:.09em;margin-bottom:1.6rem}
+.sts{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.st{text-align:center}
+.stn{font-family:var(--ft);font-size:1.7rem;font-weight:900;color:var(--glow)}
+.stl{font-size:.66rem;color:var(--mt);letter-spacing:.05em;margin-top:.15rem}
+.edu{margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid rgba(123,28,46,.2)}
+.edu p{font-size:.78rem;color:var(--mt);line-height:1.75}
+.edu strong{color:var(--cream)}
+.edu em{color:var(--glow);font-style:normal;font-size:.72rem}
+
+.abody p{font-family:var(--fs);font-size:1.08rem;color:var(--mt);line-height:1.95;margin-bottom:1.2rem}
+.abody p strong{color:var(--cream);font-weight:600}
+.abody p em{color:var(--gl);font-style:italic}
+.abody .highlight{background:rgba(123,28,46,.12);border-left:2px solid var(--glow);padding:.8rem 1.1rem;border-radius:0 .3rem .3rem 0;margin:1.4rem 0}
+.abody .highlight p{margin:0;font-size:1rem;color:var(--cream)}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.3rem}
+.tag{background:rgba(123,28,46,.11);border:1px solid rgba(123,28,46,.32);color:var(--glow);border-radius:2rem;padding:.28rem .85rem;font-size:.7rem;transition:background .3s}
+.tag:hover{background:rgba(123,28,46,.22)}
+
+/* ─────────────────────────────────────────────────────────
+   SKILLS
+───────────────────────────────────────────────────────── */
+#skills{background:#0c0910}
+.skg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.skc{background:var(--bg3);border:1px solid rgba(123,28,46,.16);border-radius:.5rem;padding:1.7rem;transition:all .35s;position:relative;overflow:hidden}
+.skc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--burg),var(--glow));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.skc:hover::after{transform:scaleX(1)}
+.skc:hover{border-color:rgba(123,28,46,.48);transform:translateY(-4px);box-shadow:0 12px 32px rgba(123,28,46,.16)}
+.skc.featured{border-color:rgba(123,28,46,.3);background:linear-gradient(135deg,var(--bg3),rgba(123,28,46,.08))}
+.sko{font-size:1.45rem;margin-bottom:.9rem}
+.skt{font-family:var(--ft);font-size:.88rem;color:var(--wht);margin-bottom:.85rem}
+.skps{display:flex;flex-wrap:wrap;gap:.4rem}
+.skp{background:rgba(5,3,8,.7);border:1px solid rgba(200,149,42,.16);color:var(--cream);border-radius:.22rem;padding:.24rem .6rem;font-family:var(--fc);font-size:.68rem;transition:border-color .3s}
+.skc:hover .skp{border-color:rgba(200,149,42,.36)}
+.skp.sec{border-color:rgba(201,48,80,.25);color:var(--glow)}
+
+/* ─────────────────────────────────────────────────────────
+   EXPERIENCE
+───────────────────────────────────────────────────────── */
+#experience{background:linear-gradient(180deg,#0c0910 0%,var(--bg) 100%)}
+.tl{position:relative;padding-left:1.4rem}
+.tl::before{content:'';position:absolute;top:0;left:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--glow) 0%,transparent 100%)}
+.tli{position:relative;padding:0 0 3.2rem 2.5rem;opacity:0;transform:translateX(-14px);transition:all .6s ease}
+.tli.vis{opacity:1;transform:translateX(0)}
+.tld{position:absolute;left:-6px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--glow);border:2px solid #0c0910;box-shadow:0 0 10px rgba(201,48,80,.45)}
+.tldt{font-family:var(--fc);font-size:.66rem;color:var(--glow);letter-spacing:.1em;margin-bottom:.4rem}
+.tlr{font-family:var(--ft);font-size:1.02rem;color:var(--wht);margin-bottom:.2rem}
+.tlco{font-size:.8rem;color:var(--gl);margin-bottom:.75rem}
+.tlul{list-style:none}
+.tlul li{font-size:.83rem;color:var(--mt);line-height:1.75;padding-left:1.1rem;position:relative;margin-bottom:.28rem}
+.tlul li::before{content:'▸';position:absolute;left:0;color:var(--burg)}
+
+/* ─────────────────────────────────────────────────────────
+   PROJECTS
+───────────────────────────────────────────────────────── */
+#projects{background:var(--bg)}
+.pjg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.2rem}
+.pjc{background:var(--bg3);border:1px solid rgba(123,28,46,.18);border-radius:.5rem;padding:1.9rem;display:flex;flex-direction:column;transition:all .35s;position:relative;overflow:hidden}
+.pjc::before{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 36px 36px 0;border-color:transparent var(--burg) transparent transparent;opacity:0;transition:opacity .3s}
+.pjc:hover::before{opacity:.55}
+.pjc:hover{border-color:rgba(123,28,46,.52);transform:translateY(-5px);box-shadow:0 16px 44px rgba(123,28,46,.2)}
+.pjl{font-family:var(--fc);font-size:.67rem;color:var(--wat);letter-spacing:.1em;margin-bottom:.65rem}
+.pjt{font-family:var(--ft);font-size:1rem;color:var(--wht);margin-bottom:.65rem}
+.pjd{font-size:.83rem;color:var(--mt);line-height:1.8;flex:1;margin-bottom:1.3rem}
+.pja{display:inline-flex;align-items:center;gap:.38rem;color:var(--gl);font-size:.75rem;letter-spacing:.06em;transition:gap .3s,color .3s}
+.pja svg{width:13px;height:13px}
+.pja:hover{gap:.65rem;color:var(--wht)}
+
+/* ─────────────────────────────────────────────────────────
+   VOLUNTEER
+───────────────────────────────────────────────────────── */
+#volunteer{background:#0c0910}
+.vog{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.1rem}
+.voc{background:var(--bg3);border:1px solid rgba(123,28,46,.16);border-radius:.5rem;padding:1.6rem;transition:all .35s}
+.voc:hover{border-color:rgba(123,28,46,.46);transform:translateY(-3px);box-shadow:0 10px 28px rgba(123,28,46,.13)}
+.voi{font-size:1.5rem;margin-bottom:.85rem}
+.vot{font-family:var(--ft);font-size:.88rem;color:var(--wht);margin-bottom:.22rem}
+.voo{font-size:.73rem;color:var(--glow);margin-bottom:.18rem}
+.vop{font-family:var(--fc);font-size:.64rem;color:var(--mt2);margin-bottom:.7rem;letter-spacing:.06em}
+.vod{font-size:.81rem;color:var(--mt);line-height:1.75}
+
+/* ─────────────────────────────────────────────────────────
+   CERTS
+───────────────────────────────────────────────────────── */
+#certs{background:linear-gradient(180deg,#0c0910 0%,var(--bg) 100%)}
+.ctg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.ctc{background:var(--bg3);border:1px solid rgba(123,28,46,.16);border-radius:.5rem;padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:all .3s}
+.ctc:hover{border-color:rgba(200,149,42,.38);transform:translateX(4px);box-shadow:0 8px 24px rgba(200,149,42,.07)}
+.cti{font-size:1.55rem;flex-shrink:0}
+.ctn{font-size:.86rem;color:var(--wht);font-weight:500;margin-bottom:.2rem;line-height:1.4}
+.ctis{font-size:.7rem;color:var(--mt);line-height:1.5}
+.ctstar{font-size:.85rem;color:var(--gl);flex-shrink:0}
+
+/* ─────────────────────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────────────────────── */
+#contact{background:var(--bg)}
+.epw{text-align:center;max-width:700px;margin:0 auto}
+.epq{font-family:var(--fs);font-size:clamp(1.05rem,2.5vw,1.3rem);font-style:italic;color:var(--mt);line-height:2.1;margin:2rem 0 3rem}
+.epq strong{color:var(--cream);font-style:normal}
+.cols{display:flex;flex-wrap:wrap;gap:.85rem;justify-content:center;margin-bottom:2.8rem}
+.col{display:flex;align-items:center;gap:.55rem;background:var(--bg3);border:1px solid rgba(123,28,46,.22);color:var(--cream);padding:.75rem 1.3rem;border-radius:.32rem;font-size:.78rem;transition:all .3s}
+.col svg{width:15px;height:15px;color:var(--glow);flex-shrink:0}
+.col:hover{border-color:var(--glow);color:var(--wht);box-shadow:0 0 20px rgba(201,48,80,.16);transform:translateY(-2px)}
+.conote{font-family:var(--fs);font-style:italic;color:var(--mt2);font-size:.88rem;line-height:1.8}
+
+/* ─────────────────────────────────────────────────────────
+   QR CODE
+───────────────────────────────────────────────────────── */
+.qrw{margin:2.2rem auto 2rem;text-align:center}
+.qr-lbl{font-family:var(--fc);font-size:.65rem;color:var(--mt2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.9rem}
+.qrimg{width:130px;height:130px;border-radius:.5rem;border:1.5px solid rgba(200,149,42,.35);box-shadow:0 0 28px rgba(200,149,42,.12);image-rendering:pixelated}
+.qr-url{font-family:var(--fc);font-size:.7rem;color:var(--gl);margin-top:.7rem;letter-spacing:.1em}
+
+/* ─────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────── */
+footer{text-align:center;padding:2.4rem 2rem;border-top:1px solid rgba(123,28,46,.14);font-size:.7rem;color:var(--mt2);letter-spacing:.06em;position:relative;z-index:1}
+footer em{color:var(--glow);font-style:normal}
+
+/* ─────────────────────────────────────────────────────────
+   SLASH FX
+───────────────────────────────────────────────────────── */
+.sfx{position:fixed;pointer-events:none;z-index:5000;height:1px;background:linear-gradient(90deg,transparent,rgba(201,48,80,.65),transparent);animation:sfxa .75s ease forwards}
+@keyframes sfxa{0%{opacity:1}100%{opacity:0}}
+
+/* ─────────────────────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────────────────────── */
+@keyframes fu   {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fdIn {from{opacity:0}to{opacity:1}}
+@keyframes nmIn {from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes slW  {from{width:0}to{width:120%;left:-10%}}
+@keyframes blink{50%{opacity:0}}
+@keyframes spin {to{transform:rotate(360deg)}}
+@keyframes ph   {0%,100%{opacity:.25}50%{opacity:1}}
+  </style>
+</head>
+<body>
+
+<div id="scur"><div id="sc-flip">
+<svg id="sc-sv" viewBox="0 0 56 56" width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sc-bl" x1="10%" y1="90%" x2="90%" y2="10%">
+      <stop offset="0%"   stop-color="#6a7888"/>
+      <stop offset="45%"  stop-color="#bcc4d4"/>
+      <stop offset="75%"  stop-color="#dde2f0"/>
+      <stop offset="100%" stop-color="#fffff4"/>
+    </linearGradient>
+    <linearGradient id="sc-hl" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#3c1e08"/>
+      <stop offset="100%" stop-color="#6e3e1c"/>
+    </linearGradient>
+    <filter id="sc-gf"><feGaussianBlur in="SourceGraphic" stdDeviation="2.8"/></filter>
+    <filter id="sc-sf"><feGaussianBlur in="SourceGraphic" stdDeviation="1.2"/></filter>
+  </defs>
+  <!-- tip ambient glow -->
+  <circle cx="52" cy="4" r="8" fill="rgba(255,240,120,.22)" filter="url(#sc-gf)"/>
+  <!-- blade soft glow -->
+  <polygon points="8,48 12,52 52,4" fill="rgba(180,200,255,.1)" filter="url(#sc-sf)"/>
+  <!-- blade main -->
+  <polygon points="8,48 12,52 52,4" fill="url(#sc-bl)"/>
+  <!-- front edge highlight -->
+  <line x1="52" y1="4" x2="12" y2="52" stroke="rgba(255,255,252,.85)" stroke-width=".6"/>
+  <!-- fuller groove -->
+  <line x1="51" y1="5.5" x2="9.5" y2="49" stroke="rgba(55,65,88,.5)" stroke-width=".4"/>
+  <!-- guard -->
+  <path d="M 4,44 Q 10,50 16,56" stroke="#3a2818" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <path d="M 4.5,44.5 Q 10,50 15.5,55.5" stroke="#7a5838" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <circle cx="4"  cy="44" r="1.9" fill="#2a1808"/>
+  <circle cx="16" cy="56" r="1.9" fill="#2a1808"/>
+  <!-- handle -->
+  <polygon points="5,45 9,49 1,57 -3,53" fill="url(#sc-hl)"/>
+  <line x1="7" y1="47" x2="-1" y2="55" stroke="#180c02" stroke-width=".8" stroke-dasharray="2,1.8" opacity=".85"/>
+  <line x1="8" y1="48" x2="0" y2="56" stroke="#c08040" stroke-width=".5" stroke-dasharray="1.2,2.5" opacity=".6"/>
+  <!-- pommel -->
+  <ellipse cx="-1" cy="55" rx="3" ry="1.9" transform="rotate(-45 -1 55)" fill="#222028"/>
+  <ellipse cx="-1" cy="55" rx="1.4" ry=".9" transform="rotate(-45 -1 55)" fill="#564448"/>
+  <!-- tip glow layers (animated) -->
+  <circle class="sc-t1" cx="52" cy="4" r="4.5" fill="rgba(255,244,150,.4)"/>
+  <circle class="sc-t2" cx="52" cy="4" r="2.3" fill="rgba(255,255,225,.85)"/>
+  <circle cx="52" cy="4" r=".9" fill="white"/>
+</svg>
+</div></div>
+<div id="spb"></div>
+<canvas id="bgc"></canvas>
+
+<!-- Chapter dots -->
+<div id="cdots">
+  <div class="cdot on"  data-l="Opening"   data-t="hero"></div>
+  <div class="cdot"     data-l="The Case"   data-t="about"></div>
+  <div class="cdot"     data-l="Arsenal"    data-t="skills"></div>
+  <div class="cdot"     data-l="Field Work" data-t="experience"></div>
+  <div class="cdot"     data-l="The Network"data-t="volunteer"></div>
+  <div class="cdot"     data-l="Built"      data-t="projects"></div>
+  <div class="cdot"     data-l="Verified"   data-t="certs"></div>
+  <div class="cdot"     data-l="The Hire"   data-t="contact"></div>
+</div>
+
+<!-- Mobile nav -->
+<div class="mnav" id="mnav">
+  <p class="mnav-sub">Navigate</p>
+  <a href="#about"      onclick="cN()">The Case</a>
+  <a href="#skills"     onclick="cN()">Arsenal</a>
+  <a href="#experience" onclick="cN()">Field Work</a>
+  <a href="#volunteer"  onclick="cN()">The Network</a>
+  <a href="#projects"   onclick="cN()">Built</a>
+  <a href="#certs"      onclick="cN()">Verified</a>
+  <a href="#contact"    onclick="cN()">The Hire</a>
+</div>
+
+<nav id="nav">
+  <a href="#hero" class="nlogo">ANHA ASHRAF LIYA</a>
+  <ul class="nlinks">
+    <li><a href="#about">The Case</a></li>
+    <li><a href="#skills">Arsenal</a></li>
+    <li><a href="#experience">Field Work</a></li>
+    <li><a href="#volunteer">Network</a></li>
+    <li><a href="#projects">Built</a></li>
+    <li><a href="#certs">Verified</a></li>
+    <li><a href="#contact">Hire Me</a></li>
+  </ul>
+  <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     THE OPENING
+═══════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="opn">
+    <span class="ol a">Most people use technology.</span>
+    <span class="ol b">&nbsp;</span>
+    <span class="ol c">I <em style="color:var(--glow)">question</em> it.</span>
+    <span class="ol d">Pull it apart. Trace the packets. Find the gaps.</span>
+  </div>
+
+  <div class="hdiv"></div>
+
+  <div class="hnw">
+    <div class="hsl"></div>
+    <h1 class="hname">
+      <span class="hn-pre">ANHA ASHRAF</span>
+      <span class="hn-main">LIYA</span>
+    </h1>
+  </div>
+
+  <p class="hsub">— &thinsp; SERAPHINE &thinsp; —</p>
+
+  <p class="hrole"><span id="twt"></span><span class="tc"></span></p>
+
+  <div class="hctas">
+    <a href="#about" class="btn btn-p">Read My Story</a>
+    <a href="#contact" class="btn btn-g">Make Contact</a>
+  </div>
+
+  <div class="shint">Scroll to begin</div>
+</section>
+
+<div class="wdv"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,60 C360,-10 1080,70 1440,10 L1440,60 Z" fill="#0c0910"/><path d="M0,52 C480,5 960,65 1440,15" stroke="rgba(123,28,46,.2)" stroke-width="1" fill="none"/><path d="M0,44 C520,20 920,55 1440,30" stroke="rgba(42,157,181,.07)" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ═══════════════════════════════════════════════
+     THE CASE  —  ABOUT
+═══════════════════════════════════════════════ -->
+<section id="about">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">The Case File</p>
+      <h2 class="ch-ttl">Here's My Story</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"I got into cybersecurity because I wanted to understand
+how things go wrong — and what it takes to stop them.
+I care more about protecting people than breaking things."</p>
+    </div>
+
+    <div class="ag">
+      <!-- card left -->
+      <div>
+        <div class="acard rv">
+          <div class="av">🌸</div>
+          <p class="aname">Anha Ashraf Liya</p>
+          <p class="arole">Seraphine · Cybersecurity & CS</p>
+          <div class="sts">
+            <div class="st"><div class="stn">4th</div><div class="stl">Year CS Student</div></div>
+            <div class="st"><div class="stn">3+</div><div class="stl">Years Experience</div></div>
+            <div class="st"><div class="stn">25+</div><div class="stl">People Mentored</div></div>
+            <div class="st"><div class="stn">8+</div><div class="stl">Volunteer Roles</div></div>
+          </div>
+          <div class="edu">
+            <p>
+              <strong>BSc Computer Science</strong><br>
+              Honours Applied Computing<br>
+              University of Windsor · 2023–2027<br><br>
+              <em>Focus: Cybersecurity · Networking · Operating Systems · AI</em>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- pitch right -->
+      <div class="abody">
+        <p class="rv">The part of security that draws me in is the detective work:<br>something happened — <em>let's figure out what, how, and why.</em><br>Then make sure it doesn't happen again.</p>
+
+        <div class="highlight rv d1">
+          <p>I'm early in my journey, still building my foundation.<br>But I've built real things outside of coursework —<br>a fraud detection tool, an OS simulator, a full-stack web app.<br>Not because I had to. Because I wanted to understand.</p>
+        </div>
+
+        <p class="rv d2">Twelve thousand kilometres from <strong>Dhaka</strong> to Windsor.<br>I didn't need anyone to push me.<br>I packed, I came, I stayed in the work.</p>
+
+        <p class="rv d3">I'm <strong>President of Women in Computer Science (WiCS)</strong> at UWindsor —<br>trying to make the CS space a little less lonely for women getting started.<br>I'm looking for an internship where I can learn from people who know what they're doing.</p>
+
+        <div class="tags rv d4">
+          <span class="tag">Cybersecurity</span>
+          <span class="tag">Network Security</span>
+          <span class="tag">Operating Systems</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Python</span>
+          <span class="tag">WiCyS Member</span>
+          <span class="tag">AI / ML</span>
+          <span class="tag">Multilingual</span>
+          <span class="tag">Available Now</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     ARSENAL  —  SKILLS
+═══════════════════════════════════════════════ -->
+<section id="skills">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">Chapter I · The Arsenal</p>
+      <h2 class="ch-ttl">What I Carry</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"This is my loadout.
+Built through coursework, projects, and late nights —
+and a refusal to stop at surface level."</p>
+    </div>
+
+    <div class="skg">
+
+      <!-- SECURITY FIRST — featured -->
+      <div class="skc featured rv">
+        <div class="sko">🛡️</div>
+        <p class="skt">Security & Networking</p>
+        <div class="skps">
+          <span class="skp sec">Cybersecurity Fundamentals</span>
+          <span class="skp sec">Network Protocols (TCP/IP · DNS · DHCP)</span>
+          <span class="skp sec">Wireshark</span>
+          <span class="skp sec">Linux / Unix Environments</span>
+          <span class="skp sec">Vulnerability Thinking (WiCyS VDP)</span>
+          <span class="skp sec">Firewall Concepts</span>
+          <span class="skp sec">OS Internals</span>
+        </div>
+      </div>
+
+      <div class="skc featured rv d1">
+        <div class="sko">⚙️</div>
+        <p class="skt">Systems & Architecture</p>
+        <div class="skps">
+          <span class="skp sec">Operating Systems (process mgmt · memory)</span>
+          <span class="skp sec">Computer Architecture I & II</span>
+          <span class="skp sec">Systems Programming</span>
+          <span class="skp sec">Memory Management</span>
+          <span class="skp sec">Page Replacement Algorithms</span>
+          <span class="skp sec">Theory of Computation</span>
+        </div>
+      </div>
+
+      <div class="skc rv d2">
+        <div class="sko">🗡️</div>
+        <p class="skt">Languages & Development</p>
+        <div class="skps">
+          <span class="skp">Python</span><span class="skp">PHP</span>
+          <span class="skp">JavaScript</span><span class="skp">HTML & CSS</span>
+          <span class="skp">SQL</span><span class="skp">C (basics)</span>
+        </div>
+      </div>
+
+      <div class="skc rv">
+        <div class="sko">🌊</div>
+        <p class="skt">AI & Databases</p>
+        <div class="skps">
+          <span class="skp">DBMS Design (COMP-3150)</span>
+          <span class="skp">AI Concepts (COMP-3710)</span>
+          <span class="skp">REST APIs</span>
+          <span class="skp">OpenAI API</span>
+          <span class="skp">Claude API</span>
+          <span class="skp">Prompt Engineering</span>
+        </div>
+      </div>
+
+      <div class="skc rv d1">
+        <div class="sko">⚡</div>
+        <p class="skt">Tools & Productivity</p>
+        <div class="skps">
+          <span class="skp">Git / GitHub</span><span class="skp">VS Code</span>
+          <span class="skp">Microsoft 365</span><span class="skp">Google Workspace</span>
+          <span class="skp">Canva</span><span class="skp">POS Systems</span>
+        </div>
+      </div>
+
+      <div class="skc rv d2">
+        <div class="sko">💬</div>
+        <p class="skt">Communication</p>
+        <div class="skps">
+          <span class="skp">English · Fluent</span>
+          <span class="skp">Bengali · Native</span>
+          <span class="skp">Hindi · Conversational</span>
+          <span class="skp">Public Speaking</span>
+          <span class="skp">Technical Documentation</span>
+          <span class="skp">Stakeholder Communication</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="wdv" style="transform:scaleX(-1)"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,60 C400,0 1040,70 1440,20 L1440,60 Z" fill="#050308"/><path d="M0,50 C360,10 1080,60 1440,15" stroke="rgba(123,28,46,.15)" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ═══════════════════════════════════════════════
+     FIELD WORK  —  EXPERIENCE
+═══════════════════════════════════════════════ -->
+<section id="experience">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">Chapter II · Field Work</p>
+      <h2 class="ch-ttl">The Work Was Real</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"I've been in the field since 2020.
+Not always in tech — but always learning
+how systems hold, and where they crack."</p>
+    </div>
+
+    <div class="tl">
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Jun 2026 – Present</p>
+        <h3 class="tlr">President</h3>
+        <p class="tlco">UWindsor Women in Computer Science Club (WiCS)</p>
+        <ul class="tlul">
+          <li>Build the room where women in CS feel like they belong.</li>
+          <li>Plan the events. Make the decisions. Show up for people — every single semester.</li>
+          <li>Represent us in rooms that matter. Hold the door open wider.</li>
+          <li>And when it gets hard — I'm still there.</li>
+        </ul>
+      </div>
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Sep 2025 – Nov 2025</p>
+        <h3 class="tlr">LEAD Program Assistant</h3>
+        <p class="tlco">Women's Enterprise Skills Training of Windsor (WEST) · Internship</p>
+        <ul class="tlul">
+          <li>Tracked attendance and documentation for an 11-student program. Nothing slipped.</li>
+          <li>Coordinated every session — prep, facilitation, wrap-up — start to finish.</li>
+          <li>Kept everything organized across Microsoft 365 and Google Workspace.</li>
+          <li>Quiet work. Consistent. The kind that actually matters.</li>
+        </ul>
+      </div>
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Nov 2025 – Dec 2025</p>
+        <h3 class="tlr">Salesperson · Seasonal</h3>
+        <p class="tlco">TikTak Heat · Windsor, ON</p>
+        <ul class="tlul">
+          <li>Served 100+ customers a day. Cash, POS, pressure.</li>
+          <li>Zero errors. Clean close every shift.</li>
+          <li>Inventory counted. Reports filed. Done.</li>
+        </ul>
+      </div>
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Jan 2025 – Apr 2025</p>
+        <h3 class="tlr">Communications Assistant</h3>
+        <p class="tlco">Family Fuse · Internship · Windsor, ON</p>
+        <ul class="tlul">
+          <li>Helped coordinate events for 200+ people.</li>
+          <li>Wrote the materials. Managed the vendors. Kept things moving.</li>
+          <li>Left every project cleaner than I found it.</li>
+        </ul>
+      </div>
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Sep 2024 – Apr 2025</p>
+        <h3 class="tlr">Marketing Team Member</h3>
+        <p class="tlco">Disability Studies Student Association (DSSA) · UWindsor · Executive Committee</p>
+        <ul class="tlul">
+          <li>Executive committee. Led the strategy — not just the execution.</li>
+          <li>Designed 4+ campaigns in Canva. Built the outreach from scratch.</li>
+          <li>15+ students reached. The pipeline ran because I built it.</li>
+          <li>Owned decisions. Showed up prepared. Delivered.</li>
+        </ul>
+      </div>
+
+      <div class="tli">
+        <div class="tld"></div>
+        <p class="tldt">Jan 2020 – Jul 2023</p>
+        <h3 class="tlr">Front of House · Customer Service</h3>
+        <p class="tlco">Premium Kacchi (Family-Owned Restaurant) · Dhaka, Bangladesh</p>
+        <ul class="tlul">
+          <li>Three years in a family restaurant in Dhaka. High volume, every day.</li>
+          <li>Orders, reservations, relationships — all at once, all the time.</li>
+          <li>Trained new staff. Kept the process steady. Never dropped a thread.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     THE NETWORK  —  VOLUNTEER
+═══════════════════════════════════════════════ -->
+<section id="volunteer">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">Chapter IV · The Human Network</p>
+      <h2 class="ch-ttl">I Built a Network Before I Knew What Networking Was</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"People are a system too.
+I've been learning how they work
+long before I learned the protocols."</p>
+    </div>
+
+    <div class="vog">
+
+      <div class="voc rv">
+        <div class="voi">🔭</div>
+        <p class="vot">Science Ambassador</p>
+        <p class="voo">Destination Science / USci · University of Windsor</p>
+        <p class="vop">Oct 2024 – Jul 2025</p>
+        <p class="vod">Six campus tour groups. Complex information, real people, plain language.<br>I made it land — every time.</p>
+      </div>
+
+      <div class="voc rv d1">
+        <div class="voi">🤝</div>
+        <p class="vot">International Student Mentor</p>
+        <p class="voo">Suitcase to Backpack · International Student Centre, UWindsor</p>
+        <p class="vop">Aug 2024 – Sep 2024</p>
+        <p class="vod">Mentored 25+ incoming international students — one-on-one.<br>I know what it feels like to land somewhere new<br>and not know the rules.</p>
+      </div>
+
+      <div class="voc rv d2">
+        <div class="voi">🤝</div>
+        <p class="vot">International Student Mentor</p>
+        <p class="voo">Suitcase to Backpack · International Student Centre, UWindsor</p>
+        <p class="vop">Apr 2025 – May 2025</p>
+        <p class="vod">Second cohort. Same commitment.<br>Each session individualized — real problems, real answers.</p>
+      </div>
+
+      <div class="voc rv">
+        <div class="voi">🌱</div>
+        <p class="vot">General Volunteer</p>
+        <p class="voo">Campus Community Garden (CCG) · University of Windsor</p>
+        <p class="vop">Sep 2024 – Dec 2024</p>
+        <p class="vod">Volunteered in the campus garden alongside students. Ten hours across three sessions. Showed up, did the work, left it better.</p>
+      </div>
+
+
+
+      <div class="voc rv">
+        <div class="voi">🌿</div>
+        <p class="vot">Sustainability Peer Educator</p>
+        <p class="voo">UWindsor Sustainability Office</p>
+        <p class="vop">Sep 2024 – May 2025</p>
+        <p class="vod">I turned a dry topic into something people actually listened to.<br>Peer education. Campus-wide. It works when you make it personal.</p>
+      </div>
+
+      <div class="voc rv d2">
+        <div class="voi">🎯</div>
+        <p class="vot">Event Volunteer · LEAD</p>
+        <p class="voo">University of Windsor</p>
+        <p class="vop">Jun 2025 – Jul 2025</p>
+        <p class="vod">Three orientation programs. Three hundred students and parents.<br>I knew where everything was, kept the lines moving, stayed calm.</p>
+      </div>
+
+      <div class="voc rv">
+        <div class="voi">☀️</div>
+        <p class="vot">Customer Service Volunteer</p>
+        <p class="voo">Carrousel of the Nations · Zuleeats · Windsor, ON</p>
+        <p class="vop">Jun 2024</p>
+        <p class="vod">Two days. A hundred people. Multicultural, fast, full.<br>I showed up and held my own.</p>
+      </div>
+
+      <div class="voc rv d1">
+        <div class="voi">💡</div>
+        <p class="vot">Hackathon Volunteer</p>
+        <p class="voo">WinHacks · University of Windsor</p>
+        <p class="vop">Feb 2026</p>
+        <p class="vod">Verified name tags and coordinated meal distribution on event day. Small job. Showed up. Done.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<div class="wdv"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C480,-10 960,70 1440,20 L1440,60 L0,60 Z" fill="#0c0910"/><path d="M0,40 C520,5 920,60 1440,18" stroke="rgba(42,157,181,.07)" stroke-width="1.5" fill="none"/></svg></div>
+
+<!-- ═══════════════════════════════════════════════
+     BUILT  —  PROJECTS
+═══════════════════════════════════════════════ -->
+<section id="projects">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">Chapter III · Proof of Concept</p>
+      <h2 class="ch-ttl">What I've Built</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"Not finished assignments — still live on GitHub.
+Starred by strangers. Forked by people I've never met.
+That's the difference."</p>
+    </div>
+
+    <div class="pjg">
+
+      <div class="pjc rv">
+        <p class="pjl">Python · OS Internals · Security-Adjacent</p>
+        <h3 class="pjt">Page Replacement Simulator</h3>
+        <p class="pjd">FIFO, LRU, Optimal — the algorithms that decide what lives in RAM<br>and what gets left behind.<br>Clean Python, JSON I/O, live on GitHub. Real stars, real forks.</p>
+        <a href="https://github.com/SeraphineLiya/Page-Replacement-Simulator" target="_blank" rel="noopener" class="pja">
+          View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+
+      <div class="pjc rv d1">
+        <p class="pjl">PHP · HTML/CSS · Full-Stack Web</p>
+        <h3 class="pjt">UWinByteStore</h3>
+        <p class="pjd">Full e-commerce app from scratch.<br>PHP backend, product routing, structured frontend.<br>I built it to understand how web things work —<br>before I think about how they break.</p>
+        <a href="https://github.com/SeraphineLiya/UWinByteStore" target="_blank" rel="noopener" class="pja">
+          View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+
+      <div class="pjc rv d2">
+        <p class="pjl">Python · Cybersecurity · Fraud Detection</p>
+        <h3 class="pjt">FiltroBank</h3>
+        <p class="pjd">Fraud detection for Canadian remote job seekers.<br>Python backend, HTML frontend — built to flag scam postings<br>before the damage is done.</p>
+        <a href="https://github.com/SeraphineLiya/FiltroBank" target="_blank" rel="noopener" class="pja">
+          View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+
+      <div class="pjc rv d3">
+        <p class="pjl">Java · Source Code Analysis</p>
+        <h3 class="pjt">LineMappingTool</h3>
+        <p class="pjd">A team-built Java diff tool — maps what changed, what stayed, what's gone.<br>Line by line. Precise. Includes an accuracy evaluator against test datasets.</p>
+        <a href="https://github.com/SeraphineLiya/LineMappingTool" target="_blank" rel="noopener" class="pja">
+          View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     VERIFIED  —  CERTS
+═══════════════════════════════════════════════ -->
+<section id="certs">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">Chapter V · Verified</p>
+      <h2 class="ch-ttl">The Receipts</h2>
+      <div class="ch-line"></div>
+      <p class="ch-story">"Not trophies.
+Proof I finish what I start —
+completed, issued, in hand."</p>
+    </div>
+
+    <div class="ctg">
+
+      <div class="ctc rv">
+        <div class="cti">🏛️</div>
+        <div>
+          <p class="ctn">Worker Health & Safety Awareness in 4 Steps</p>
+          <p class="ctis">Ontario Ministry of Labour, Training and Skills Development · April 23, 2025</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+      <div class="ctc rv d1">
+        <div class="cti">🤝</div>
+        <div>
+          <p class="ctn">CCG Volunteer Certificate of Completion</p>
+          <p class="ctis">Campus Community Group · University of Windsor · 2024</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+      <div class="ctc rv d2">
+        <div class="cti">🌟</div>
+        <div>
+          <p class="ctn">Volunteer Incentive Program (VIP) Certificate — Fall 2025</p>
+          <p class="ctis">University of Windsor · Fall 2025</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+      <div class="ctc rv">
+        <div class="cti">🌟</div>
+        <div>
+          <p class="ctn">Volunteer Incentive Program (VIP) Certificate — Winter 2025</p>
+          <p class="ctis">University of Windsor · Winter 2025</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+      <div class="ctc rv d1">
+        <div class="cti">💛</div>
+        <div>
+          <p class="ctn">Mentor — Certificate of Appreciation</p>
+          <p class="ctis">International Student Centre · University of Windsor · 2024</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+      <div class="ctc rv d2">
+        <div class="cti">💛</div>
+        <div>
+          <p class="ctn">Mentor — Certificate of Appreciation</p>
+          <p class="ctis">International Student Centre · University of Windsor · 2025</p>
+        </div>
+        <div class="ctstar">✦</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     THE HIRE  —  CONTACT
+═══════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="si">
+    <div class="ch">
+      <p class="ch-lbl">The Epilogue · Make Your Move</p>
+      <h2 class="ch-ttl">The Pitch Is Yours Now</h2>
+      <div class="ch-line"></div>
+    </div>
+
+    <div class="epw">
+      <p class="epq rv">
+        "You've read the case file. You've seen the field work, the builds, the network.<br><br>
+        I'm a fourth-year cybersecurity-focused CS student who can already do the job,
+        learns faster than your onboarding doc was designed for,
+        and shows up every single time — for everyone, not just the things that look good on a CV.<br><br>
+        <strong>The next move is yours. I'm ready when you are.</strong>"
+      </p>
+
+      <div class="cols rv d1">
+        <a href="mailto:liya@uwindsor.ca" class="col">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+          liya@uwindsor.ca
+        </a>
+        <a href="https://www.linkedin.com/in/anha-ashraf-liya-seraphine/" target="_blank" rel="noopener" class="col">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/SeraphineLiya" target="_blank" rel="noopener" class="col">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+          github.com/SeraphineLiya
+        </a>
+      </div>
+
+      <p class="conote rv d2">
+        Seeking part-time, co-op, and internship roles in cybersecurity & networking &nbsp;·&nbsp;
+        Windsor, ON &amp; remote &nbsp;·&nbsp; International student — authorized to work in Canada &nbsp;·&nbsp; Available immediately
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built from scratch by <em>Anha Ashraf Liya</em> &nbsp;·&nbsp; Windsor, ON, Canada &nbsp;·&nbsp; 2026</p>
+  <p style="margin-top:.5rem;opacity:.35">✦ &nbsp; CS · Cybersecurity · Networks · Systems &nbsp; ✦</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script>
+/* ── touch detect ── */
+const isTch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+/* ── sword cursor ── */
+if (!isTch) {
+  const scur  = document.getElementById('scur');
+  const scFlip= document.getElementById('sc-flip');
+  const scSv  = document.getElementById('sc-sv');
+
+  /* tip is at (60,4) in 64×108 viewBox displayed at 68×115px
+     tip_x_right = 60/64*68 ≈ 63.75 → 64
+     tip_x_left  = 60 - 56 = 4  (after scaleX(-1))
+     tip_y = 4/56*60 ≈ 4.3 → 4                                 */
+  const TX_R=56, TX_L=4, TY=4;
+  let mx=0, my=0, lastSpk=0, isLeft=false, TX=TX_R;
+
+  function applyHand(left){
+    isLeft=left; TX=left?TX_L:TX_R;
+    scFlip.classList.toggle('lh',left);
+  }
+
+  /* restore saved preference or show prompt */
+  const saved=localStorage.getItem('sc-hand');
+  if(saved){ applyHand(saved==='L'); }
+  else {
+    const m=document.createElement('div');
+    m.id='hmd';
+    m.innerHTML=
+      '<p class="hm-t">Which hand do you use?</p>'+
+      '<div class="hm-bs">'+
+      '<button class="hm-b" onclick="scChooseHand(\'L\')">✋ &nbsp;Left</button>'+
+      '<button class="hm-b" onclick="scChooseHand(\'R\')">Right &nbsp;🤚</button>'+
+      '</div>';
+    document.body.appendChild(m);
+  }
+  window.scChooseHand=function(h){
+    localStorage.setItem('sc-hand',h);
+    applyHand(h==='L');
+    document.getElementById('hmd')?.remove();
+  };
+
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    scur.style.transform=`translate(${mx-TX}px,${my-TY}px)`;
+
+    /* golden spark trail from tip */
+    const now=Date.now(), spd=Math.hypot(e.movementX,e.movementY);
+    if(spd>5 && now-lastSpk>38){
+      lastSpk=now;
+      const n=Math.min(3,Math.ceil(spd/8));
+      for(let i=0;i<n;i++){
+        const sp=document.createElement('div');
+        sp.className='sc-spark';
+        const sz=Math.random()*2.8+1.2;
+        const dx=(Math.random()-.5)*32, dy=Math.random()*24+8;
+        const dur=220+Math.random()*260;
+        const hue=40+Math.random()*18;
+        sp.style.cssText=`left:${mx}px;top:${my}px;width:${sz}px;height:${sz}px;`+
+          `margin:${-sz/2}px 0 0 ${-sz/2}px;`+
+          `background:hsl(${hue},100%,72%);box-shadow:0 0 5px hsl(${hue},100%,55%);`+
+          `--dx:${dx}px;--dy:${dy}px;animation:scSpk ${dur}ms ease-out forwards`;
+        document.body.appendChild(sp);
+        setTimeout(()=>sp.remove(), dur+60);
+      }
+    }
+  });
+
+  /* hover: sword glows */
+  document.querySelectorAll('a,button,.skc,.pjc,.ctc,.voc,.col,.cdot,.btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>scSv.classList.add('hov'));
+    el.addEventListener('mouseleave',()=>scSv.classList.remove('hov'));
+  });
+
+  /* click: flash at tip + diagonal slash */
+  document.addEventListener('click', e=>{
+    const fl=document.createElement('div');
+    fl.className='sc-flash';
+    fl.style.cssText=`left:${e.clientX}px;top:${e.clientY}px;width:10px;height:10px;animation:scFl .4s ease-out forwards`;
+    document.body.appendChild(fl);
+    setTimeout(()=>fl.remove(), 460);
+    const s=document.createElement('div');
+    s.className='sfx';
+    const a=-28+Math.random()*56, w=55+Math.random()*80;
+    s.style.cssText=`left:${e.clientX}px;top:${e.clientY}px;width:${w}px;`+
+      `transform:rotate(${a}deg) translateX(-50%);transform-origin:left center;`;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 750);
+  });
+}
+
+/* ── hamburger ── */
+const hbg = document.getElementById('hbg');
+const mn  = document.getElementById('mnav');
+function cN(){ hbg.classList.remove('on'); mn.classList.remove('on'); }
+hbg.addEventListener('click', ()=>{ hbg.classList.toggle('on'); mn.classList.toggle('on'); });
+
+/* ── typewriter ── */
+const phr = [
+  'Cybersecurity & Systems',
+  'SOC Analyst Track',
+  'CS (Honours) · University of Windsor',
+  'Linux · Wireshark · TCP/IP',
+  'Women in CyberSecurity (WiCyS)',
+  'Open to Internships & Part-Time Roles'
+];
+let pi=0,ci=0,del=false;
+const twEl=document.getElementById('twt');
+function type(){
+  const p=phr[pi];
+  twEl.textContent=del?p.slice(0,ci--):p.slice(0,++ci);
+  if(!del&&ci===p.length){setTimeout(()=>del=true,1900);}
+  else if(del&&ci===0){del=false;pi=(pi+1)%phr.length;}
+  setTimeout(type,del?38:70);
+}
+setTimeout(type,4700);
+
+/* ── scroll ── */
+const navbar=document.getElementById('nav');
+const spb=document.getElementById('spb');
+const dots=document.querySelectorAll('.cdot');
+const secIds=['hero','about','skills','experience','volunteer','projects','certs','contact'];
+
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  navbar.classList.toggle('sc',sy>60);
+  spb.style.width=(sy/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';
+  let act=0;
+  secIds.forEach((id,i)=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=window.innerHeight*.5)act=i;});
+  dots.forEach((d,i)=>d.classList.toggle('on',i===act));
+},{passive:true});
+
+/* ── chapter dot clicks ── */
+dots.forEach(d=>{ d.addEventListener('click',()=>{ const t=document.getElementById(d.dataset.t); if(t)t.scrollIntoView({behavior:'smooth'}); }); });
+
+/* ── intersection observers ── */
+const chO=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');chO.unobserve(x.target);}}),{threshold:.15});
+document.querySelectorAll('.ch').forEach(h=>chO.observe(h));
+
+const rvO=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');rvO.unobserve(x.target);}}),{threshold:.1});
+document.querySelectorAll('.rv,.tli').forEach(el=>rvO.observe(el));
+
+/* ── smooth anchors ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();cN();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});
+});
+
+/* ── canvas ── */
+const cv=document.getElementById('bgc');
+const cx=cv.getContext('2d');
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+rsz(); window.addEventListener('resize',rsz,{passive:true});
+
+/* particles — embers (fire) + stars */
+class P{
+  constructor(){this.r(true);}
+  r(init){
+    this.x=Math.random()*cv.width;
+    this.y=init?Math.random()*cv.height:cv.height+8;
+    this.rad=Math.random()*1.6+.3;
+    this.vy=Math.random()*.55+.12;
+    this.vx=(Math.random()-.5)*.4;
+    this.a=Math.random()*.65+.18;
+    this.tp=Math.random()<.32?'e':'s';
+    this.fl=Math.random()*Math.PI*2;
+  }
+  u(){this.y-=this.vy;this.x+=this.vx;this.fl+=.05;if(this.y<-6)this.r(false);}
+  d(){
+    const f=this.tp==='e'?Math.abs(Math.sin(this.fl)):1;
+    cx.save();cx.globalAlpha=this.a*f;
+    if(this.tp==='e'){
+      cx.shadowBlur=14;cx.shadowColor='#c93050';
+      cx.fillStyle=`hsl(${336+Math.sin(this.fl)*20},78%,${52+Math.cos(this.fl)*8}%)`;
+    } else {
+      cx.shadowBlur=4;cx.shadowColor='rgba(232,184,75,.4)';
+      cx.fillStyle='#e8d5c4';
+    }
+    cx.beginPath();cx.arc(this.x,this.y,this.rad,0,Math.PI*2);cx.fill();cx.restore();
+  }
+}
+const pts=Array.from({length:220},()=>new P());
+
+/* Water Breathing arcs — Demon Slayer style, clearly visible */
+function dWater(){
+  const t=Date.now()/4800;
+  /* main sweeping arcs — layered for depth */
+  const arcData=[
+    {alpha:.06, color:'#2a9db5', lw:55, cx:.12, rad:.44, sa:.18, span:.58},
+    {alpha:.045,color:'#1a7a8a', lw:40, cx:.4,  rad:.52, sa:.30, span:.50},
+    {alpha:.055,color:'#3ab8d4', lw:35, cx:.68, rad:.40, sa:.14, span:.54},
+    {alpha:.035,color:'#2a9db5', lw:22, cx:.85, rad:.38, sa:.22, span:.46},
+  ];
+  arcData.forEach((d,i)=>{
+    cx.save();
+    cx.globalAlpha=d.alpha;
+    cx.strokeStyle=d.color;
+    cx.lineWidth=d.lw;
+    cx.beginPath();
+    const ox=cv.width*d.cx+Math.sin(t+i*.9)*52;
+    const oy=cv.height*.5+Math.cos(t*.7+i)*60;
+    const r=cv.width*d.rad;
+    const sa=Math.PI*(d.sa+t*.038+i*.12);
+    cx.arc(ox,oy,r,sa,sa+Math.PI*d.span);
+    cx.stroke();
+    cx.restore();
+  });
+  /* secondary thin accent arcs */
+  for(let i=0;i<2;i++){
+    cx.save();
+    cx.globalAlpha=.07;
+    cx.strokeStyle='#7ad4e8';
+    cx.lineWidth=8;
+    cx.beginPath();
+    cx.arc(
+      cv.width*(.25+i*.5)+Math.sin(t*1.2+i)*35,
+      cv.height*.45+Math.cos(t+i)*45,
+      cv.width*(.3+i*.08),
+      Math.PI*(.35+t*.06+i*.2),
+      Math.PI*(.35+t*.06+i*.2)+Math.PI*.35
+    );
+    cx.stroke();cx.restore();
+  }
+  /* AoT-style lightning streaks — sharp diagonal energy lines */
+  const lt=Date.now()/1000;
+  for(let i=0;i<3;i++){
+    const phase=Math.sin(lt*1.8+i*2.1);
+    if(phase>.72){
+      cx.save();
+      cx.globalAlpha=(phase-.72)*1.4*.12;
+      cx.strokeStyle=`hsl(${48+i*12},85%,72%)`;
+      cx.lineWidth=1.2;
+      cx.shadowBlur=12;cx.shadowColor='rgba(232,184,75,.6)';
+      cx.beginPath();
+      const sx=cv.width*(.2+i*.28)+Math.random()*30;
+      const sy=Math.random()*cv.height*.4;
+      cx.moveTo(sx,sy);
+      cx.lineTo(sx+22+Math.random()*18, sy+55+Math.random()*40);
+      cx.lineTo(sx+8+Math.random()*24,  sy+110+Math.random()*35);
+      cx.lineTo(sx+28+Math.random()*20, sy+165+Math.random()*50);
+      cx.stroke();cx.restore();
+    }
+  }
+  /* burgundy radial glow at bottom */
+  const g=cx.createRadialGradient(cv.width*.5,cv.height,0,cv.width*.5,cv.height,cv.width*.6);
+  g.addColorStop(0,'rgba(123,28,46,.09)');g.addColorStop(1,'transparent');
+  cx.fillStyle=g;cx.fillRect(0,0,cv.width,cv.height);
+}
+
+(function loop(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  dWater();
+  pts.forEach(p=>{p.u();p.d();});
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
