@@ -143,7 +143,7 @@ a{color:inherit;text-decoration:none}
 /* ─────────────────────────────────────────────────────────
    SWORD CURSOR
 ───────────────────────────────────────────────────────── */
-#scur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;will-change:transform}
+#scur{position:fixed;top:0;left:0;z-index:20001;pointer-events:none;will-change:transform}
 /* flip wrapper — handles left/right handedness */
 #sc-flip{display:inline-block}
 #sc-flip.lh{transform:scaleX(-1)}
@@ -494,8 +494,8 @@ footer em{color:var(--glow);font-style:normal}
   border-bottom:8px solid rgba(50,25,8,.72);
   border-right:5px solid rgba(80,45,20,.62);
   border-radius:42% 42% 3px 3px / 18% 18% 3px 3px;
-  min-height:155px;min-width:110px;
-  position:relative;cursor:pointer;
+  width:120px;height:162px;
+  position:relative;cursor:none;
   transition:all .28s ease;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:.38rem;color:rgba(255,235,210,.95);font-family:var(--ft);
