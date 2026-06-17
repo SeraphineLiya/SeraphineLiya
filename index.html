@@ -44,7 +44,7 @@ a{color:inherit;text-decoration:none}
   filter:drop-shadow(0 0 2px rgba(255,238,100,.3));
   transition:filter .18s;
   animation:scSway 5s ease-in-out infinite;
-  transform-origin:13% 86%;
+  transform-origin:10% 74%;
 }
 #sc-sv.hov{
   filter:
@@ -341,47 +341,74 @@ footer em{color:var(--glow);font-style:normal}
 <body>
 
 <div id="scur"><div id="sc-flip">
-<svg id="sc-sv" viewBox="0 0 56 56" width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+<svg id="sc-sv" viewBox="0 0 64 80" width="56" height="70" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="sc-bl" x1="10%" y1="90%" x2="90%" y2="10%">
-      <stop offset="0%"   stop-color="#6a7888"/>
-      <stop offset="45%"  stop-color="#bcc4d4"/>
-      <stop offset="75%"  stop-color="#dde2f0"/>
-      <stop offset="100%" stop-color="#fffff4"/>
+    <linearGradient id="sc-bl" x1="5%" y1="95%" x2="95%" y2="5%">
+      <stop offset="0%"   stop-color="#7a8898"/>
+      <stop offset="30%"  stop-color="#c8d0e0"/>
+      <stop offset="60%"  stop-color="#e8edf8"/>
+      <stop offset="85%"  stop-color="#f8faff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
     </linearGradient>
     <linearGradient id="sc-hl" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#3c1e08"/>
-      <stop offset="100%" stop-color="#6e3e1c"/>
+      <stop offset="0%"   stop-color="#2e1606"/>
+      <stop offset="50%"  stop-color="#6a3818"/>
+      <stop offset="100%" stop-color="#3a1e08"/>
     </linearGradient>
-    <filter id="sc-gf"><feGaussianBlur in="SourceGraphic" stdDeviation="2.8"/></filter>
-    <filter id="sc-sf"><feGaussianBlur in="SourceGraphic" stdDeviation="1.2"/></filter>
+    <linearGradient id="sc-gd" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#4a3828"/>
+      <stop offset="100%" stop-color="#2a1e14"/>
+    </linearGradient>
+    <filter id="sc-gf" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+    <filter id="sc-sf" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5"/>
+    </filter>
   </defs>
-  <!-- tip ambient glow -->
-  <circle cx="52" cy="4" r="8" fill="rgba(255,240,120,.22)" filter="url(#sc-gf)"/>
-  <!-- blade soft glow -->
-  <polygon points="8,48 12,52 52,4" fill="rgba(180,200,255,.1)" filter="url(#sc-sf)"/>
-  <!-- blade main -->
-  <polygon points="8,48 12,52 52,4" fill="url(#sc-bl)"/>
-  <!-- front edge highlight -->
-  <line x1="52" y1="4" x2="12" y2="52" stroke="rgba(255,255,252,.85)" stroke-width=".6"/>
-  <!-- fuller groove -->
-  <line x1="51" y1="5.5" x2="9.5" y2="49" stroke="rgba(55,65,88,.5)" stroke-width=".4"/>
-  <!-- guard -->
-  <path d="M 4,44 Q 10,50 16,56" stroke="#3a2818" stroke-width="3.6" fill="none" stroke-linecap="round"/>
-  <path d="M 4.5,44.5 Q 10,50 15.5,55.5" stroke="#7a5838" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  <circle cx="4"  cy="44" r="1.9" fill="#2a1808"/>
-  <circle cx="16" cy="56" r="1.9" fill="#2a1808"/>
-  <!-- handle -->
-  <polygon points="5,45 9,49 1,57 -3,53" fill="url(#sc-hl)"/>
-  <line x1="7" y1="47" x2="-1" y2="55" stroke="#180c02" stroke-width=".8" stroke-dasharray="2,1.8" opacity=".85"/>
-  <line x1="8" y1="48" x2="0" y2="56" stroke="#c08040" stroke-width=".5" stroke-dasharray="1.2,2.5" opacity=".6"/>
+
+  <!-- tip glow (ambient) -->
+  <circle cx="58" cy="4" r="10" fill="rgba(255,248,160,.25)" filter="url(#sc-gf)"/>
+
+  <!-- blade glow layer -->
+  <polygon points="57,3 59,5 10,60 8,58" fill="rgba(200,215,255,.12)" filter="url(#sc-sf)"/>
+
+  <!-- blade — tapers sharply to tip -->
+  <polygon points="58,4 60,6 12,62 8,58" fill="url(#sc-bl)"/>
+
+  <!-- blade front edge (bright) -->
+  <line x1="58" y1="4" x2="12" y2="62" stroke="rgba(255,255,255,.9)" stroke-width=".7"/>
+  <!-- fuller groove (shadow line down center) -->
+  <line x1="57.5" y1="5" x2="11" y2="60.5" stroke="rgba(40,55,80,.6)" stroke-width=".55"/>
+  <!-- back edge (slightly darker) -->
+  <line x1="60" y1="6" x2="8" y2="58" stroke="rgba(180,195,220,.4)" stroke-width=".4"/>
+
+  <!-- crossguard — the horizontal bar -->
+  <rect x="3" y="58" width="20" height="4.5" rx="2"
+        transform="rotate(-45 13 60.25)" fill="url(#sc-gd)"/>
+  <!-- guard highlight -->
+  <line x1="4" y1="56" x2="22" y2="64"
+        stroke="rgba(160,140,110,.7)" stroke-width=".8"
+        transform="rotate(-45 13 60)" stroke-linecap="round"/>
+  <!-- guard end caps -->
+  <circle cx="4"  cy="54" r="2.2" fill="#2a1808"/>
+  <circle cx="22" cy="66" r="2.2" fill="#2a1808"/>
+
+  <!-- grip / handle -->
+  <polygon points="6,56 10,60 2,72 -2,68" fill="url(#sc-hl)"/>
+  <!-- grip wraps (leather strips) -->
+  <line x1="8.5" y1="58.5" x2=".5" y2="69.5" stroke="#0e0602" stroke-width=".9" stroke-dasharray="2.5,2" opacity=".9"/>
+  <line x1="7"   y1="57"   x2="-1" y2="68"   stroke="#c09050" stroke-width=".55" stroke-dasharray="1,2.8" opacity=".65"/>
+
   <!-- pommel -->
-  <ellipse cx="-1" cy="55" rx="3" ry="1.9" transform="rotate(-45 -1 55)" fill="#222028"/>
-  <ellipse cx="-1" cy="55" rx="1.4" ry=".9" transform="rotate(-45 -1 55)" fill="#564448"/>
-  <!-- tip glow layers (animated) -->
-  <circle class="sc-t1" cx="52" cy="4" r="4.5" fill="rgba(255,244,150,.4)"/>
-  <circle class="sc-t2" cx="52" cy="4" r="2.3" fill="rgba(255,255,225,.85)"/>
-  <circle cx="52" cy="4" r=".9" fill="white"/>
+  <ellipse cx="0" cy="70" rx="4" ry="2.5" transform="rotate(-45 0 70)" fill="#28202a"/>
+  <ellipse cx="0" cy="70" rx="2.2" ry="1.3" transform="rotate(-45 0 70)" fill="#504858"/>
+  <ellipse cx="0" cy="70" rx=".9" ry=".5" transform="rotate(-45 0 70)" fill="#706878" opacity=".7"/>
+
+  <!-- tip glow (animated) -->
+  <circle class="sc-t1" cx="58" cy="4" r="5" fill="rgba(255,248,140,.42)"/>
+  <circle class="sc-t2" cx="58" cy="4" r="2.8" fill="rgba(255,255,220,.88)"/>
+  <circle cx="58" cy="4" r="1.1" fill="white"/>
 </svg>
 </div></div>
 <div id="spb"></div>
@@ -997,9 +1024,9 @@ if (!isTch) {
 
   /* tip is at (60,4) in 64×108 viewBox displayed at 68×115px
      tip_x_right = 60/64*68 ≈ 63.75 → 64
-     tip_x_left  = 60 - 56 = 4  (after scaleX(-1))
-     tip_y = 4/56*60 ≈ 4.3 → 4                                 */
-  const TX_R=56, TX_L=4, TY=4;
+     tip_x_left  = 56 - 51 = 5  (after scaleX(-1))
+     tip_y = 4/80*70 ≈ 3.5 → 4                                 */
+  const TX_R=51, TX_L=5, TY=4;
   let mx=0, my=0, lastSpk=0, isLeft=false, TX=TX_R;
 
   function applyHand(left){
@@ -1007,22 +1034,19 @@ if (!isTch) {
     scFlip.classList.toggle('lh',left);
   }
 
-  /* restore saved preference or show prompt */
-  const saved=localStorage.getItem('sc-hand');
-  if(saved){ applyHand(saved==='L'); }
-  else {
+  /* always ask on every visit */
+  {
     const m=document.createElement('div');
     m.id='hmd';
     m.innerHTML=
       '<p class="hm-t">Which hand do you use?</p>'+
       '<div class="hm-bs">'+
-      '<button class="hm-b" onclick="scChooseHand(\'L\')">✋ &nbsp;Left</button>'+
-      '<button class="hm-b" onclick="scChooseHand(\'R\')">Right &nbsp;🤚</button>'+
+      '<button class="hm-b" onclick="scChooseHand(\'R\')" style="background:var(--burg);border-color:var(--glow)">🖱️ Right hand</button>'+
+      '<button class="hm-b" onclick="scChooseHand(\'L\')">Left hand</button>'+
       '</div>';
     document.body.appendChild(m);
   }
   window.scChooseHand=function(h){
-    localStorage.setItem('sc-hand',h);
     applyHand(h==='L');
     document.getElementById('hmd')?.remove();
   };

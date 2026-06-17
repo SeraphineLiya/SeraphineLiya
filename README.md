@@ -6,7 +6,7 @@
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anha-ashraf-liya-seraphine/)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/SeraphineLiya)
-[![Portfolio](https://img.shields.io/badge/Portfolio-7b1c2e?style=flat-square&logo=firefox&logoColor=white)](https://seraphineliya.github.io)
+[![Portfolio](https://img.shields.io/badge/Portfolio-7b1c2e?style=flat-square&logo=firefox&logoColor=white)](https://seraphineliya.github.io/SeraphineLiya/)
 
 </div>
 
