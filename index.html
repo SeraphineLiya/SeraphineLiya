@@ -21,29 +21,48 @@
   --fb: 'Inter',sans-serif;
   --fc: 'JetBrains Mono',monospace;
 }
+/* ── DAY: soft sky + lavender ── */
 [data-theme="day"]{
-  --bg:#daeeff;--bg2:#c8e8ff;--bg3:#f0e8ff;--bg4:#faf0ff;
+  --bg:#cce8ff;--bg2:#e8f4ff;--bg3:#ffffff;--bg4:#f5f0ff;
   --burg:#5b4fa8;--bm:#6d62c0;
-  --glow:#8b7fd4;--gold:#b07820;--gl:#c89228;
-  --cream:#18103c;--mt:#4a3d7a;--mt2:#6e5fa0;
-  --wht:#08041e;--wat:#2060b0;
+  --glow:#7b6fd4;--gold:#9a6818;--gl:#b07828;
+  --cream:#10103a;--mt:#36327a;--mt2:#58549a;
+  --wht:#05051a;--wat:#2060b0;
 }
+[data-theme="day"] body{
+  background:linear-gradient(170deg,#6db8e8 0%,#90cef0 18%,#b8e0ff 42%,#cce8ff 65%,#dce8ff 85%,#e8e4ff 100%) fixed;
+  color:var(--cream);
+}
+[data-theme="day"] #bgc{display:none}
+[data-theme="day"] nav,[data-theme="day"] nav.sc{background:rgba(160,215,248,.92)!important;border-bottom-color:rgba(91,79,168,.18)!important}
+[data-theme="day"] .mnav{background:rgba(185,228,255,.98)!important}
+[data-theme="day"] .nlinks a,[data-theme="day"] .mnav a{color:var(--cream)!important}
+[data-theme="day"] .nlinks a:hover,[data-theme="day"] .mnav a:hover{color:var(--burg)!important}
+[data-theme="day"] .nlogo{color:var(--burg)!important}
+[data-theme="day"] #hmd{background:rgba(240,248,255,.97)!important;border-color:rgba(91,79,168,.28)!important}
+[data-theme="day"] .hm-b{background:rgba(255,255,255,.82)!important;color:var(--cream)!important;border-color:rgba(91,79,168,.25)!important}
+[data-theme="day"] .hm-t{color:var(--mt)!important}
+[data-theme="day"] .hbg span{background:var(--cream)}
+
+/* ── ACCESS: clean white, high contrast, WCAG AA ── */
 [data-theme="access"]{
-  --bg:#f4f7ff;--bg2:#e6ecff;--bg3:#dde5ff;--bg4:#d0daff;
+  --bg:#f8faff;--bg2:#f0f4ff;--bg3:#ffffff;--bg4:#eef2ff;
   --burg:#0050a0;--bm:#006acc;
-  --glow:#1a7ae0;--gold:#c06800;--gl:#d87800;
-  --cream:#0d1020;--mt:#3a4a6a;--mt2:#5a6a8a;
-  --wht:#000000;--wat:#0060b0;
+  --glow:#0068c8;--gold:#a85c00;--gl:#c07000;
+  --cream:#080d1e;--mt:#1e2d50;--mt2:#3e4d70;
+  --wht:#000000;--wat:#004a8c;
 }
-/* Light-theme structural overrides */
-[data-theme="day"] body,[data-theme="access"] body{color:var(--cream)}
-[data-theme="day"] nav.sc,[data-theme="access"] nav.sc{background:rgba(200,232,255,.95)!important;border-bottom-color:rgba(100,130,200,.25)!important}
-[data-theme="day"] .mnav,[data-theme="access"] .mnav{background:rgba(218,240,255,.98)!important}
-[data-theme="day"] .mnav a,[data-theme="access"] .mnav a,[data-theme="day"] .nlinks a,[data-theme="access"] .nlinks a{color:var(--cream)}
-[data-theme="day"] #hmd,[data-theme="access"] #hmd{background:rgba(235,245,255,.97)!important;border-color:rgba(80,120,210,.35)!important}
-[data-theme="day"] .hm-b,[data-theme="access"] .hm-b{background:rgba(255,255,255,.7);color:var(--cream)}
-[data-theme="access"] nav.sc{background:rgba(240,245,255,.96)!important}
-[data-theme="access"] .mnav{background:rgba(244,247,255,.99)!important}
+[data-theme="access"] body{background:#f8faff;color:var(--cream)}
+[data-theme="access"] #bgc{display:none}
+[data-theme="access"] nav,[data-theme="access"] nav.sc{background:rgba(245,248,255,.96)!important;border-bottom-color:rgba(0,80,160,.18)!important}
+[data-theme="access"] .mnav{background:rgba(248,250,255,.99)!important}
+[data-theme="access"] .nlinks a,[data-theme="access"] .mnav a{color:var(--cream)!important}
+[data-theme="access"] .nlinks a:hover,[data-theme="access"] .mnav a:hover{color:var(--burg)!important}
+[data-theme="access"] .nlogo{color:var(--burg)!important}
+[data-theme="access"] #hmd{background:rgba(248,250,255,.98)!important;border-color:rgba(0,80,160,.25)!important}
+[data-theme="access"] .hm-b{background:rgba(255,255,255,.9)!important;color:var(--cream)!important;border-color:rgba(0,80,160,.3)!important}
+[data-theme="access"] .hm-t{color:var(--mt)!important}
+[data-theme="access"] .hbg span{background:var(--cream)}
 
 /* ─────────────────────────────────────────────────────────
    RESET
@@ -360,6 +379,28 @@ footer em{color:var(--glow);font-style:normal}
 @keyframes spin {to{transform:rotate(360deg)}}
 @keyframes ph   {0%,100%{opacity:.25}50%{opacity:1}}
 
+/* ─── FLOATING CLOUDS (day only) ─── */
+#clouds{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+[data-theme="day"] #clouds{display:block}
+.cloud{position:absolute;background:rgba(255,255,255,.86);border-radius:50px;box-shadow:0 4px 20px rgba(100,160,220,.12)}
+.cloud::before,.cloud::after{content:'';position:absolute;background:rgba(255,255,255,.86);border-radius:50%}
+.c1{width:180px;height:54px;top:7%;animation:fltCld 55s linear infinite;left:-220px}
+.c1::before{width:92px;height:74px;top:-38px;left:22px}
+.c1::after{width:64px;height:56px;top:-30px;left:94px}
+.c2{width:130px;height:40px;top:19%;opacity:.78;animation:fltCld 73s linear infinite 14s;left:-160px}
+.c2::before{width:68px;height:56px;top:-28px;left:15px}
+.c2::after{width:46px;height:42px;top:-20px;left:70px}
+.c3{width:230px;height:68px;top:5%;opacity:.82;animation:fltCld 65s linear infinite 30s;left:-270px}
+.c3::before{width:114px;height:88px;top:-46px;left:34px}
+.c3::after{width:78px;height:66px;top:-36px;left:120px}
+.c4{width:160px;height:48px;top:30%;opacity:.68;animation:fltCld 88s linear infinite 46s;left:-200px}
+.c4::before{width:82px;height:64px;top:-33px;left:22px}
+.c4::after{width:56px;height:50px;top:-26px;left:84px}
+.c5{width:100px;height:32px;top:13%;opacity:.6;animation:fltCld 98s linear infinite 62s;left:-130px}
+.c5::before{width:54px;height:44px;top:-22px;left:12px}
+.c5::after{width:38px;height:36px;top:-17px;left:54px}
+@keyframes fltCld{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 360px))}}
+
 /* ─── CHICKEN INTRO ─── */
 #chkmd{position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);animation:fdIn .5s ease}
 .chk-box{text-align:center;padding:2.5rem 1.8rem;max-width:500px;width:92%}
@@ -407,6 +448,15 @@ footer em{color:var(--glow);font-style:normal}
       </button>
     </div>
   </div>
+</div>
+
+<!-- Floating clouds — day theme only -->
+<div id="clouds" aria-hidden="true">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="cloud c4"></div>
+  <div class="cloud c5"></div>
 </div>
 
 <div id="scur"><div id="sc-flip">
