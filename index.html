@@ -64,6 +64,72 @@
 [data-theme="access"] .hm-t{color:var(--mt)!important}
 [data-theme="access"] .hbg span{background:var(--cream)}
 
+/* ── Section bg fix: override hardcoded #0c0910 dark backgrounds ── */
+[data-theme="day"] #hero,[data-theme="day"] #about,[data-theme="day"] #skills,
+[data-theme="day"] #experience,[data-theme="day"] #projects,[data-theme="day"] #volunteer,
+[data-theme="day"] #certs,[data-theme="day"] #contact{background:transparent!important}
+[data-theme="access"] #hero,[data-theme="access"] #about,[data-theme="access"] #skills,
+[data-theme="access"] #experience,[data-theme="access"] #projects,[data-theme="access"] #volunteer,
+[data-theme="access"] #certs,[data-theme="access"] #contact{background:transparent!important}
+
+/* ── Card overrides for light themes ── */
+[data-theme="day"] .acard,[data-theme="day"] .skc,[data-theme="day"] .skc.featured,
+[data-theme="day"] .pjc,[data-theme="day"] .voc,[data-theme="day"] .ctc,
+[data-theme="day"] .col,[data-theme="day"] .tlc{
+  background:rgba(255,255,255,.8)!important;
+  border-color:rgba(91,79,168,.18)!important;
+  box-shadow:0 4px 20px rgba(91,79,168,.08)!important;
+}
+[data-theme="day"] .skp{background:rgba(255,255,255,.75)!important;border-color:rgba(91,79,168,.22)!important;color:var(--cream)!important}
+[data-theme="day"] .tag{background:rgba(91,79,168,.1)!important;border-color:rgba(91,79,168,.25)!important;color:var(--burg)!important}
+[data-theme="day"] .abody .highlight{background:rgba(91,79,168,.08)!important;border-left-color:var(--glow)!important}
+[data-theme="day"] .tld{border-color:rgba(240,248,255,.9)!important}
+[data-theme="day"] .ch-line{background:linear-gradient(90deg,var(--burg),transparent)!important}
+
+[data-theme="access"] .acard,[data-theme="access"] .skc,[data-theme="access"] .skc.featured,
+[data-theme="access"] .pjc,[data-theme="access"] .voc,[data-theme="access"] .ctc,
+[data-theme="access"] .col,[data-theme="access"] .tlc{
+  background:rgba(255,255,255,.9)!important;
+  border-color:rgba(0,80,160,.15)!important;
+  box-shadow:0 2px 12px rgba(0,80,160,.06)!important;
+}
+[data-theme="access"] .skp{background:rgba(255,255,255,.9)!important;border-color:rgba(0,80,160,.22)!important;color:var(--cream)!important}
+[data-theme="access"] .tag{background:rgba(0,80,160,.08)!important;border-color:rgba(0,80,160,.22)!important;color:var(--burg)!important}
+[data-theme="access"] .abody .highlight{background:rgba(0,80,160,.06)!important;border-left-color:var(--burg)!important}
+[data-theme="access"] .tld{border-color:rgba(248,250,255,.9)!important}
+
+/* ─── SAKURA PETALS — day only ─── */
+.sak{position:fixed;pointer-events:none;z-index:2;width:8px;height:6px;border-radius:50% 50% 50% 0;background:rgba(255,182,193,.82);display:none}
+.sak:nth-child(even){border-radius:50% 0 50% 50%;background:rgba(255,210,220,.75);width:7px;height:5px}
+@keyframes sakFall{
+  0%{transform:translateY(-20px) rotate(0deg) translateX(0);opacity:.9}
+  30%{transform:translateY(28vh) rotate(110deg) translateX(20px);opacity:.8}
+  60%{transform:translateY(60vh) rotate(230deg) translateX(-16px);opacity:.6}
+  100%{transform:translateY(110vh) rotate(400deg) translateX(8px);opacity:0}
+}
+[data-theme="day"] .sak{display:block}
+.sak.s1{left:6%;animation:sakFall 9s linear infinite}
+.sak.s2{left:17%;animation:sakFall 12.5s linear infinite 2.5s}
+.sak.s3{left:29%;animation:sakFall 10s linear infinite 1s}
+.sak.s4{left:43%;animation:sakFall 14s linear infinite 4.5s}
+.sak.s5{left:56%;animation:sakFall 11s linear infinite 6.5s}
+.sak.s6{left:67%;animation:sakFall 8.5s linear infinite 0.8s}
+.sak.s7{left:78%;animation:sakFall 13s linear infinite 3.2s}
+.sak.s8{left:91%;animation:sakFall 10.5s linear infinite 7.5s}
+.sak.s9{left:22%;animation:sakFall 15.5s linear infinite 8.5s}
+.sak.s10{left:83%;animation:sakFall 9.5s linear infinite 5.5s}
+.sak.s11{left:37%;animation:sakFall 11.5s linear infinite 11s}
+.sak.s12{left:72%;animation:sakFall 13.5s linear infinite 9s}
+
+/* ─── ACCESS CHICKEN GUIDE ─── */
+#acc-chk{display:none;position:fixed;bottom:1.6rem;left:1.6rem;z-index:150;
+  background:rgba(255,255,255,.94);border:1px solid rgba(0,80,160,.18);
+  border-radius:.9rem;padding:.55rem .9rem;gap:.45rem;
+  font-family:var(--fb);font-size:.68rem;color:var(--mt);
+  box-shadow:0 4px 16px rgba(0,80,160,.1);backdrop-filter:blur(8px);animation:fu .5s forwards}
+[data-theme="access"] #acc-chk{display:flex;align-items:center}
+#acc-chk .acc-icon{font-size:1.3rem;animation:chkBob 3s ease-in-out infinite;line-height:1}
+
 /* ─────────────────────────────────────────────────────────
    RESET
 ───────────────────────────────────────────────────────── */
@@ -457,6 +523,26 @@ footer em{color:var(--glow);font-style:normal}
   <div class="cloud c3"></div>
   <div class="cloud c4"></div>
   <div class="cloud c5"></div>
+</div>
+
+<!-- Sakura petals — day theme only -->
+<div class="sak s1" aria-hidden="true"></div>
+<div class="sak s2" aria-hidden="true"></div>
+<div class="sak s3" aria-hidden="true"></div>
+<div class="sak s4" aria-hidden="true"></div>
+<div class="sak s5" aria-hidden="true"></div>
+<div class="sak s6" aria-hidden="true"></div>
+<div class="sak s7" aria-hidden="true"></div>
+<div class="sak s8" aria-hidden="true"></div>
+<div class="sak s9" aria-hidden="true"></div>
+<div class="sak s10" aria-hidden="true"></div>
+<div class="sak s11" aria-hidden="true"></div>
+<div class="sak s12" aria-hidden="true"></div>
+
+<!-- Clear Vision guide chicken -->
+<div id="acc-chk" role="status" aria-label="Clear Vision mode active">
+  <span class="acc-icon">🐣</span>
+  <span>Clear Vision on</span>
 </div>
 
 <div id="scur"><div id="sc-flip">
