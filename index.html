@@ -22,19 +22,28 @@
   --fc: 'JetBrains Mono',monospace;
 }
 [data-theme="day"]{
-  --bg:#12082e;--bg2:#1c1045;--bg3:#271860;--bg4:#33227a;
-  --burg:#8b5cf6;--bm:#a070ff;
-  --glow:#c084fc;--gold:#c8952a;--gl:#e0b04b;
-  --cream:#f0eaff;--mt:#b09acc;--mt2:#7060a0;
-  --wht:#faf5ff;--wat:#818cf8;
+  --bg:#daeeff;--bg2:#c8e8ff;--bg3:#f0e8ff;--bg4:#faf0ff;
+  --burg:#5b4fa8;--bm:#6d62c0;
+  --glow:#8b7fd4;--gold:#b07820;--gl:#c89228;
+  --cream:#18103c;--mt:#4a3d7a;--mt2:#6e5fa0;
+  --wht:#08041e;--wat:#2060b0;
 }
 [data-theme="access"]{
-  --bg:#07080f;--bg2:#0e1020;--bg3:#161828;--bg4:#1e2238;
-  --burg:#0066cc;--bm:#0080ff;
-  --glow:#38a8ff;--gold:#f0a800;--gl:#f5c842;
-  --cream:#eef4ff;--mt:#8aaabf;--mt2:#5a7a95;
-  --wht:#ffffff;--wat:#00c8e0;
+  --bg:#f4f7ff;--bg2:#e6ecff;--bg3:#dde5ff;--bg4:#d0daff;
+  --burg:#0050a0;--bm:#006acc;
+  --glow:#1a7ae0;--gold:#c06800;--gl:#d87800;
+  --cream:#0d1020;--mt:#3a4a6a;--mt2:#5a6a8a;
+  --wht:#000000;--wat:#0060b0;
 }
+/* Light-theme structural overrides */
+[data-theme="day"] body,[data-theme="access"] body{color:var(--cream)}
+[data-theme="day"] nav.sc,[data-theme="access"] nav.sc{background:rgba(200,232,255,.95)!important;border-bottom-color:rgba(100,130,200,.25)!important}
+[data-theme="day"] .mnav,[data-theme="access"] .mnav{background:rgba(218,240,255,.98)!important}
+[data-theme="day"] .mnav a,[data-theme="access"] .mnav a,[data-theme="day"] .nlinks a,[data-theme="access"] .nlinks a{color:var(--cream)}
+[data-theme="day"] #hmd,[data-theme="access"] #hmd{background:rgba(235,245,255,.97)!important;border-color:rgba(80,120,210,.35)!important}
+[data-theme="day"] .hm-b,[data-theme="access"] .hm-b{background:rgba(255,255,255,.7);color:var(--cream)}
+[data-theme="access"] nav.sc{background:rgba(240,245,255,.96)!important}
+[data-theme="access"] .mnav{background:rgba(244,247,255,.99)!important}
 
 /* ─────────────────────────────────────────────────────────
    RESET
@@ -1096,8 +1105,8 @@ if (!isTch) {
     m.innerHTML=
       '<p class="hm-t">Which hand do you wield with?</p>'+
       '<div class="hm-bs">'+
-      '<button class="hm-b" onclick="scChooseHand(false)" style="background:var(--burg);border-color:var(--glow)">⚔️ Right hand</button>'+
-      '<button class="hm-b" onclick="scChooseHand(true)">Left hand ⚔️</button>'+
+      '<button class="hm-b" onclick="scChooseHand(true)" style="background:var(--burg);border-color:var(--glow)">⚔️ Right hand</button>'+
+      '<button class="hm-b" onclick="scChooseHand(false)">Left hand ⚔️</button>'+
       '</div>';
     document.body.appendChild(m);
   };
