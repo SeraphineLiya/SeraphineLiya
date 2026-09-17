@@ -18,7 +18,7 @@ I care more about protecting people than breaking things. The part of security t
 
 I'm still building my foundation, but I'm building real things while I get there: a fraud detection tool for Canadian job seekers, an OS memory simulator, a full-stack platform, a diff analysis tool. Not for grades — because I needed to understand.
 
-I'm also President of Women in Computer Science (WiCS) at UWindsor, trying to make the CS space a little less lonely for women getting started.
+I'm also President of Women in Computer Science (WiCS) at UWindsor and Event Manager for WiCyS, trying to make the CS space a little less lonely for women getting started. I'm a Resident Assistant at UWindsor too, backed by training in first aid, RDSV response, and safeTALK.
 
 ---
 
@@ -36,7 +36,7 @@ I'm also President of Women in Computer Science (WiCS) at UWindsor, trying to ma
 ## Technical Stack
 
 **Languages:** Python · Java · PHP · C · HTML/CSS · JavaScript · SQL  
-**Security & Networking:** Wireshark · TCP/IP · Network analysis · Vulnerability thinking (WiCyS VDP)  
+**Security & Networking:** Wireshark · TCP/IP · Network analysis  
 **Systems:** Linux · OS internals · Memory management · Computer architecture  
 **Tools:** Git · GitHub · VS Code · Microsoft 365 · Google Workspace · Canva  
 **Languages (spoken):** English (fluent) · Bengali (native) · Hindi (conversational)
@@ -46,6 +46,8 @@ I'm also President of Women in Computer Science (WiCS) at UWindsor, trying to ma
 ## Currently
 
 - 🏛️ **President, Women in Computer Science (WiCS) — UWindsor** · Jun 2026 – Present
+- 📣 **Event Manager, WiCyS** · Sep 2026 – Present
+- 🏠 **Resident Assistant, University of Windsor** · Aug 2026 – Present
 - 🔐 On the **SOC Analyst Track** · open to cybersecurity internships
 - 🛡️ Building in: threat detection · network analysis · OS-level security
 - 📍 Windsor, Ontario · open to on-site, hybrid, and remote
